@@ -1,15 +1,16 @@
 
 // import { getCurrentUser, signOut, User } from "@/lib/auth";
-import { createContext, ReactNode, use, useEffect, useState } from "react";
+import { createContext, ReactNode, use, useContext, useEffect, useState } from "react";
 import { User } from "../types/user.interface";
 
 interface AuthContextData {
   user: User | null;
+  token: string | null;
   isLoading: boolean;
   signOut: () => Promise<void>;
 }
 
-export const AuthContext = createContext<AuthContextData | undefined>(undefined);
+export const AuthContext = createContext<AuthContextData | undefined>({user: null, token: null, isLoading: true, signOut: async () => {} });
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -42,6 +43,7 @@ export function AuthProvider({
 
   const value: AuthContextData = {
     user,
+    token: null,
     isLoading,
     signOut: handleSignOut,
   };
@@ -50,9 +52,9 @@ export function AuthProvider({
 }
 
 export function useAuth() {
-  const context = use(AuthContext);
-  if (context === undefined) {
-    throw Error("useAuth must be used within an AuthProvider");
-  }
+  const context = useContext(AuthContext);
+  // if (context === undefined) {
+  //   throw Error("useAuth must be used within an AuthProvider");
+  // }
   return context;
 }
