@@ -1,10 +1,11 @@
 
 // import { getCurrentUser, signOut, User } from "@/lib/auth";
-import { createContext, ReactNode, use, useEffect, useState } from "react";
+import { createContext, ReactNode, use, useContext, useEffect, useState } from "react";
 import { User } from "../types/user.interface";
 
 interface AuthContextData {
   user: User | null;
+  toke: string | null;
   isLoading: boolean;
   signOut: () => Promise<void>;
 }
@@ -50,9 +51,9 @@ export function AuthProvider({
 }
 
 export function useAuth() {
-  const context = use(AuthContext);
-  if (context === undefined) {
-    throw Error("useAuth must be used within an AuthProvider");
-  }
+  const context = useContext(AuthContext);
+  // if (context === undefined) {
+  //   throw Error("useAuth must be used within an AuthProvider");
+  // }
   return context;
 }
